@@ -4,7 +4,8 @@ function success (req,res,message,status){
     body:message
   });
 }
-function error (req,res,message,status){
+function error (req,res,message,status,err){
+  console.log('[error]',err)
   res.status(status || 401).send({
     error:message,
     body:''

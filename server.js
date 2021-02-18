@@ -1,21 +1,11 @@
 const express = require('express');
-const router = express.Router();
-const response = require('./network/response');
+const db = require('./db');
+const router = require('./network/routes');
+db('mongodb+srv://cyaco33:jobsMANCH1955@cluster0.k1i5c.mongodb.net/test');
 var app = express();
 app.use(express.json());
-app.use(router);
-
-router.get('/name',(req,res)=>{
-  response.success(req,res, "lista desplegada");
-});
-router.post('/name',(req,res)=>{
-  if (req.query.error=="ok"){
-    response.error(req,res,'hubo un error');
-  }else{
-    response.success(req,res,'fue creado');
-  }
-});
-
+//app.use(router);
+router(app);
 
 app.listen(3000);
 console.log('la aplicación esta escuchando en http://localhost:3000');
