@@ -1,6 +1,4 @@
-
 const Model = require('./model')
-
 
 function addMessage(message){
   //list.push(message);
@@ -8,13 +6,22 @@ function addMessage(message){
   myMessage.save();
 }
 async function getMessage(filterUser){
-  let filter = {}
-  if (filterUser !== null){
-    filter={user:filterUser};
-  }
-  //Pides todos los mensajes
-  const messages = await Model.find(filter);
-  return messages;
+  return new Promise((resolve,reject)=>{
+    let filter = {}
+    if (filterUser !== null){
+      filter={user:filterUser};
+    }
+    //Pides todos los mensajes
+    Model.find(filter)
+      .populate('user')//popular (cambiar los id'213123saads' por el nombre de usuario)
+      .exec((err,populated)=>{
+        if(err){
+          reject(err);
+          return false;
+        }
+        resolve(populated);
+      })
+  })
 }
 async function updateText(id,message){
   const foundMessage = await Model.findOne({

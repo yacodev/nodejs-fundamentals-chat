@@ -1,7 +1,19 @@
 const express = require('express');
+const path = require('path');
+const multer = require('multer');//gestion de archivos
 const router = express.Router();
 const response = require('../../network/response');
 const controller = require('./controller');
+//obteniendo la extension del archivo
+const storage = multer.diskStorage({
+  destination:'public/files/',
+  filename: function(req,file,cb){
+    cb(null,file.fieldname+'-'+Date.now()+path.extname(file.originalname))
+  }
+})
+const upload = multer({
+  storage:storage
+})
 router.get('/',(req,res)=>{
   const filterMessages = req.query.user||null;
   controller.getMessages(filterMessages)
@@ -12,8 +24,9 @@ router.get('/',(req,res)=>{
       response.error(req,res,'Unexpected error',500,e)
     })
 });
-router.post('/',(req,res)=>{
-  controller.addMessage(req.body.user, req.body.message)
+router.post('/',upload.single('file'),(req,res)=>{
+
+  controller.addMessage(req.body.chat,req.body.user, req.body.message,req.file)
     .then((fullMessage)=>{
       response.success(req,res,fullMessage,201);
     })
