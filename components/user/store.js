@@ -1,5 +1,4 @@
-
-const Model = require('./model')
+const Model = require('./model');
 
 function addUser(user){
   const myUser =  new Model(user);

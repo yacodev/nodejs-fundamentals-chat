@@ -2,6 +2,7 @@ const store = require('./store');
 
 function addUser(name){
   if (!name){
+    //devolver directamente una promesa rechazada
     return Promise.reject('Invalid name');
   }
   const user = {

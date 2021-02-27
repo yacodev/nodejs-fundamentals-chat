@@ -1,9 +1,11 @@
 const store = require('./store');
-
+//////////////
 function addMessage(chat,user, message,file){
+  // validcion de datos
   return new Promise((resolve,reject)=>{
+    //comprobar  si hay usuario y mensaje
     if (!chat||!user || !message){
-      console.error('[error] no hay usuario o mensaje');
+      console.error('[messageController] no hay usuario o mensaje');
       reject('Faltan datos');
       return false;
     }
@@ -11,6 +13,7 @@ function addMessage(chat,user, message,file){
     if(file){
       fileUrl='http://localhost:3000/app/files/'+file.filename;
     }
+    //formato del mensaje
     const fullMessage = {
       chat:chat,
       user : user,
@@ -22,13 +25,16 @@ function addMessage(chat,user, message,file){
     resolve(fullMessage);
   })
 }
+//////////////
 function getMessages(filterUser){
   return new Promise((resolve,reject)=>{
     resolve(store.list(filterUser));
   })
 }
+//////////////
 function updateMessage(id,message){
   return new Promise(async (resolve,reject)=>{
+    //verificamo que tenemos id y message
     if(!id || !message){
       reject('invalided data');
       return false;
@@ -37,8 +43,10 @@ function updateMessage(id,message){
     resolve(result);
   })
 }
+//////////////
 function deleteMessage(id){
   return new Promise((resolve,reject)=>{
+    //validamos el id
     if(!id){
       reject('Id invalido');
       return false;
@@ -52,7 +60,7 @@ function deleteMessage(id){
       })
   })
 }
-
+//////////////
 module.exports = {
   addMessage,
   getMessages,
