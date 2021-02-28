@@ -1,4 +1,5 @@
 const store = require('./store');
+const { socket } = require('../../socket');
 //////////////
 function addMessage(chat,user, message,file){
   // validcion de datos
@@ -9,6 +10,7 @@ function addMessage(chat,user, message,file){
       reject('Faltan datos');
       return false;
     }
+    //tratamiento del archivos
     let fileUrl='';
     if(file){
       fileUrl='http://localhost:3000/app/files/'+file.filename;
@@ -22,6 +24,7 @@ function addMessage(chat,user, message,file){
       file:fileUrl,
     }
     store.add(fullMessage);
+    socket.io.emit('message',fullMessage);
     resolve(fullMessage);
   })
 }
